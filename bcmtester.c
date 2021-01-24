@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <bcm2835.h>
 
+//Test Comment
 
 unsigned short TEMP_TRIM1;
 short TEMP_TRIM2;
