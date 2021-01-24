@@ -4,24 +4,15 @@
 
 //Test Comment
 
-unsigned short TEMP_TRIM1;
-short TEMP_TRIM2;
-short TEMP_TRIM3;
+static unsigned short temp_trim1;
+static short temp_trim2, temp_trim2;
 
-unsigned short PRESSURE_TRIM1;
-short PRESSURE_TRIM2;
-short PRESSURE_TRIM3;
-short PRESSURE_TRIM4;
-short PRESSURE_TRIM6;
-short PRESSURE_TRIM7;
-short PRESSURE_TRIM8;
-short PRESSURE_TRIM9;
+static unsigned short pressure_trim1;
+static short pressure_trim2, pressure_trim2, pressure_trim3, pressure_trim4;
+static short pressure_trim5, pressure_trim6, pressure_trim7, pressure_trim8, pressure_trim9;
 
-unsigned char HUMIDITY_TRIM1;
-short HUMIDITY_TRIM2;
-unsigned char HUMIDITY_TRIM3;
-short HUMIDITY_TRIM4;
-short HUMIDITY_TRIM5;
+static unsigned char humidity_trim1, humidity_trim3;
+static short humidity_trim2, humiditiy_trim4, humidity_trim5;
 
 void get_temp_trim_one();
 void get_temp_trim_two();
@@ -48,10 +39,10 @@ int main(void){
 	//printf("User Reg3 = %x\n",buf[2]);
 	
 	get_temp_trim_one();
-	printf("Temp_T_1 = %x\n", TEMP_TRIM1);
+	printf("Temp_T_1 = %x\n", temp_trim1);
 	
 	get_temp_trim_two();
-	printf("Temp_T_2 = %x\n", TEMP_TRIM2);
+	printf("Temp_T_2 = %x\n", temp_trim2);
 	
 	char buf2[] = {0xE0,0xB6};
 	bcm2835_i2c_write(buf2,2);
@@ -61,11 +52,10 @@ int main(void){
 void get_temp_trim_one(void){
 	char buf[] = {0x88};
 	bcm2835_i2c_write_read_rs(buf,1,buf,2);
-	TEMP_TRIM1 = (buf[1]<<8)|(buf[0]);	
-	
+	temp_trim1 = (buf[1]<<8)|(buf[0]);		
 }
 void get_temp_trim_two(void){
 	char buf[] = {0x8A};
 	bcm2835_i2c_write_read_rs(buf,1,buf,2);
-	TEMP_TRIM2 = (buf[1]<<8)|(buf[0]);
+	temp_trim2 = (buf[1]<<8)|(buf[0]);
 }
