@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <bcm2835.h>
+int main(void){
+	int init_ok, i2c_ok;
+	char buf[]= {0xFA};
+	init_ok = bcm2835_init();
+	if (init_ok == 0){
+		printf("bcm2835_init() failed\n");
+		exit(EXIT_FAILURE);
+	}
+	bcm2835_i2c_setClockDivider(BCM2835_I2C_CLOCK_DIVIDER_2500);
+	i2c_ok = bcm2835_i2c_begin();
+	if (i2c_ok == 1){
+		printf("i2c_begin successful\n");
+	}
+	//bcm2835_i2c_setSlaveAddress(0x76);
+	bcm2835_i2c_write_read_rs(buf,1,buf,3);
+	//bcm2835_i2c_write(buf,1);
+	//bcm2835_i2c_read(buf,3);
+	printf("User Reg1 = %x\n",buf[0]);
+	printf("User Reg2 = %x\n",buf[1]);
+	printf("User Reg3 = %x\n",buf[2]);
+	
+	char buf2 = {0xE0,0xB6}
+	
+	bcm2835_i2c_end(buf2,2);
+	
+}
