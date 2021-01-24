@@ -24,6 +24,7 @@ short HUMIDITY_TRIM4;
 short HUMIDITY_TRIM5;
 
 void get_temp_trim_one();
+void get_temp_trim_two();
  
 int main(void){
 	int init_ok, i2c_ok;
@@ -49,6 +50,9 @@ int main(void){
 	get_temp_trim_one();
 	printf("Temp_T_1 = %x\n", TEMP_TRIM1);
 	
+	get_temp_trim_two();
+	printf("Temp_T_2 = %x\n", TEMP_TRIM2);
+	
 	char buf2[] = {0xE0,0xB6};
 	bcm2835_i2c_write(buf2,2);
 	bcm2835_i2c_end();
@@ -59,4 +63,9 @@ void get_temp_trim_one(void){
 	bcm2835_i2c_write_read_rs(buf,1,buf,2);
 	TEMP_TRIM1 = (buf[1]<<8)|(buf[0]);	
 	
+}
+void get_temp_trim_two(void){
+	char buf[] = {0x8A};
+	bcm2835_i2c_write_read_rs(buf,1,buf,2);
+	TEMP_TRIM2 = (buf[1]<<8)|(buf[0]);
 }
