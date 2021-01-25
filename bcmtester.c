@@ -16,6 +16,17 @@ static short humidity_trim2, humiditiy_trim4, humidity_trim5;
 
 void get_temp_trim_one();
 void get_temp_trim_two();
+void get_temp_trim_three();
+
+void get_pressure_trim_one();
+void get_pressure_trim_two();
+void get_pressure_trim_three();
+void get_pressure_trim_four();
+void get_pressure_trim_five();
+void get_pressure_trim_six();
+void get_pressure_trim_seven();
+void get_pressure_trim_eight();
+void get_pressure_trim_nine();
  
 int main(void){
 	int init_ok, i2c_ok;
@@ -58,4 +69,34 @@ void get_temp_trim_two(void){
 	char buf[] = {0x8A};
 	bcm2835_i2c_write_read_rs(buf,1,buf,2);
 	temp_trim2 = (buf[1]<<8)|(buf[0]);
+}
+void get_temp_trim_three(void){
+	char buf[] = {0x8C};
+	bcm2835_i2c_write_read_rs(buf,1,buf,2);
+	temp_trim3 = (buf[1]<<8)|(buf[0]);
+}
+void get_pressure_trim_one(void){
+	char buf[] = {0x8E};
+	bcm2835_i2c_write_read_rs(buf,1,buf,2);
+	pressure_trim1 = (buf[1]<<8)|(buf[0]);
+}
+void get_pressure_trim_two(void){
+	char buf[] = {0x90};
+	bcm2835_i2c_write_read_rs(buf,1,buf,2);
+	pressure_trim2 = (buf[1]<<8)|(buf[0]);
+}
+void get_pressure_trim_three(void){
+	char buf[] = {0x92};
+	bcm2835_i2c_write_read_rs(buf,1,buf,2);
+	pressure_trim3 = (buf[1]<<8)|(buf[0]);
+}
+void get_pressure_trim_four(void){
+	char buf[] = {0x94};
+	bcm2835_i2c_write_read_rs(buf,1,buf,2);
+	pressure_trim4 = (buf[1]<<8)|(buf[0]);
+}
+void get_pressure_trim_five(void){
+	char buf[] = {0x96};
+	bcm2835_i2c_write_read_rs(buf,1,buf,2);
+	pressure_trim5 = {buf[1]<<8)|(buf[0]);
 }
