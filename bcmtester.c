@@ -5,7 +5,7 @@
 //Test Comment
 
 static unsigned short temp_trim1;
-static short temp_trim2, temp_trim2;
+static short temp_trim2, temp_trim3;
 
 static unsigned short pressure_trim1;
 static short pressure_trim2, pressure_trim2, pressure_trim3, pressure_trim4;
@@ -27,6 +27,8 @@ void get_pressure_trim_six();
 void get_pressure_trim_seven();
 void get_pressure_trim_eight();
 void get_pressure_trim_nine();
+
+long read_pressure_meas();
  
 int main(void){
 	int init_ok, i2c_ok;
@@ -41,7 +43,7 @@ int main(void){
 	if (i2c_ok == 1){
 		printf("i2c_begin successful\n");
 	}
-	//bcm2835_i2c_setSlaveAddress(0x76);
+	bcm2835_i2c_setSlaveAddress(0x76);
 	//bcm2835_i2c_write_read_rs(buf,1,buf,3);
 	//bcm2835_i2c_write(buf,1);
 	//bcm2835_i2c_read(buf,3);
@@ -49,14 +51,20 @@ int main(void){
 	//printf("User Reg2 = %x\n",buf[1]);
 	//printf("User Reg3 = %x\n",buf[2]);
 	
+	char enable[] = {0xF4,0x05};
+	bcm2835_i2c_write(enable,2);
+
 	get_temp_trim_one();
 	printf("Temp_T_1 = %x\n", temp_trim1);
 	
 	get_temp_trim_two();
 	printf("Temp_T_2 = %x\n", temp_trim2);
 	
-	char buf2[] = {0xE0,0xB6};
-	bcm2835_i2c_write(buf2,2);
+	long pres = read_pressure_meas();
+	printf("Pressure bits = %x\n", pres);
+	
+	//char buf2[] = {0xE0,0xB6};
+	//bcm2835_i2c_write(buf2,2);
 	bcm2835_i2c_end();
 	
 }
@@ -98,5 +106,13 @@ void get_pressure_trim_four(void){
 void get_pressure_trim_five(void){
 	char buf[] = {0x96};
 	bcm2835_i2c_write_read_rs(buf,1,buf,2);
-	pressure_trim5 = {buf[1]<<8)|(buf[0]);
+	pressure_trim5 = (buf[1]<<8)|(buf[0]);
+}
+long read_pressure_meas(void){
+	char buf[] = {0xF7};
+	bcm2835_i2c_write_read_rs(buf,1,buf,3);
+	printf("Buf2 = %x\n",buf[2]);
+	printf("Buf1 = %x\n",buf[1]);
+	printf("Buf0 = %x\n",buf[0]);
+	return (buf[2]<<16)|(buf[1]<<8)|(buf[0]);
 }
